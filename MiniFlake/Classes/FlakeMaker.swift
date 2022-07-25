@@ -31,20 +31,27 @@ import Foundation
  - 12 bits sequence number
  - 10 bits instance ID
  */
-public class FlakeMaker {
+open class FlakeMaker {
+    public static var prosCustomEpoch : TimeInterval!
     
-    static let customEpoch : TimeInterval = {
-        // custom epoch is 1 March 2018 00:00 UTC
-        let utc = TimeZone(identifier: "UTC")!
-        let cal = Calendar(identifier: .iso8601)
-        var markerDate = DateComponents()
-        markerDate.calendar = cal
-        markerDate.timeZone = utc
-        markerDate.year = 2018
-        markerDate.month = 3
-        markerDate.day = 1
-        return markerDate.date!.timeIntervalSinceReferenceDate
-    }()
+    static var customEpoch : TimeInterval {
+        get {
+            if let customEpoch = prosCustomEpoch {
+                return customEpoch
+            }
+            
+            // custom epoch is 1 March 2018 00:00 UTC
+            let utc = TimeZone(identifier: "UTC")!
+            let cal = Calendar(identifier: .iso8601)
+            var markerDate = DateComponents()
+            markerDate.calendar = cal
+            markerDate.timeZone = utc
+            markerDate.year = 2018
+            markerDate.month = 3
+            markerDate.day = 1
+            return markerDate.date!.timeIntervalSinceReferenceDate
+        }
+    }
     
     static let limitInstanceNumber = UInt16(0x400)
     
